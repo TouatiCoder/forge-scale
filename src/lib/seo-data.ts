@@ -1,3 +1,4 @@
+import { de } from "./fr";
 ﻿// ========================================
 // PROGRAMMATIC SEO ENGINE " SERVICE × CITY
 // ========================================
@@ -57,6 +58,12 @@ export interface ServiceDef {
    * this ships publicly.
    */
   pricing?: PricingTier[];
+  /**
+   * Optional qualifier injected into service x city <title> only.
+   * Use ONLY where GSC shows the qualified phrase already earning
+   * impressions - not as a blanket keyword add.
+   */
+  cityTitleQualifier?: string;
 }
 
 export interface PricingTier {
@@ -638,7 +645,12 @@ export const services: ServiceDef[] = [
     slug: "application-mobile",
     name: "Application Mobile",
     nameAr: "تطبيق جوال",
-    shortDesc: "Applications mobiles multiplateformes avec Flutter",
+    // GSC 2026-08-06..09-02: "application mobile sur mesure el jadida" =
+    // 44 impressions, avg position 6.1, ZERO clicks. Ranking is fine; the
+    // title/description simply never contained "sur mesure". This is the
+    // only service with evidence for a qualifier - do not copy it around.
+    cityTitleQualifier: "sur Mesure",
+    shortDesc: "Applications mobiles sur mesure, multiplateformes avec Flutter",
     shortDescAr: "تطبيقات جوال متعددة المنصات باستخدام Flutter",
     features: [
       "Applications iOS et Android",
@@ -993,7 +1005,7 @@ export function generateServiceCityContent(service: ServiceDef, city: City, isAr
         content: `${service.painPointsAr[patternIdx]} في ${city.nameAr}، المنافسة الرقمية تشتد يومًا بعد يوم. ${city.economyAr} الشركات التي لا تستثمر في ${service.nameAr} تفقد فرصًا ثمينة أمام منافسين أكثر حضورًا على الإنترنت. مع ${city.population} نسمة و${city.industriesAr.slice(0, 3).join("، ")} كقطاعات رئيسية، يوجد سوق ضخم ينتظر من يستغله رقميًا.`,
       }
     : {
-        title: `Pourquoi avez-vous besoin de ${service.name.toLowerCase()} à ${city.name} ?`,
+        title: `Pourquoi avez-vous besoin ${de(service.name.toLowerCase())} à ${city.name} ?`,
         content: `${service.painPoints[patternIdx]} À ${city.name}, la compétition digitale s'intensifie chaque jour. ${city.economy} Les entreprises qui n'investissent pas dans ${service.name.toLowerCase().startsWith("e") || service.name.toLowerCase().startsWith("a") ? "l'" : "la "}${service.name.toLowerCase()} perdent des opportunités précieuses face à des concurrents plus visibles en ligne. Avec ${city.population} habitants et des secteurs clés comme ${city.industries.slice(0, 3).join(", ")}, il existe un marché immense à conquérir digitalement.`,
       };
 
@@ -1003,8 +1015,8 @@ export function generateServiceCityContent(service: ServiceDef, city: City, isAr
         content: `أقدم خدمات ${service.nameAr} مصممة خصيصًا لتلبية احتياجات الشركات في ${city.nameAr}. ${service.benefitsAr[0]}. ${service.benefitsAr[1]}. أعتمد على منهجية عمل مثبتة تبدأ بتحليل معمق لوضعك الحالي، تليها استراتيجية مخصصة، ثم تنفيذ دقيق مع متابعة شفافة. كل مشروع يخضع لمعايير جودة صارمة لضمان أقصى عائد على استثمارك.`,
       }
     : {
-        title: `Mes solutions de ${service.name.toLowerCase()} pour les entreprises à ${city.name}`,
-        content: `Je propose des services de ${service.name.toLowerCase()} conçus spécifiquement pour répondre aux besoins des entreprises à ${city.name}. ${service.benefits[0]}. ${service.benefits[1]}. Ma méthodologie éprouvée commence par une analyse approfondie de votre situation actuelle, suivie d'une stratégie personnalisée, puis d'une exécution rigoureuse avec un suivi transparent. Chaque projet est soumis à des standards de qualité stricts pour garantir un retour maximal sur votre investissement.`,
+        title: `Mes solutions ${de(service.name.toLowerCase())} pour les entreprises à ${city.name}`,
+        content: `Je propose des services ${de(service.name.toLowerCase())} conçus spécifiquement pour répondre aux besoins des entreprises à ${city.name}. ${service.benefits[0]}. ${service.benefits[1]}. Ma méthodologie éprouvée commence par une analyse approfondie de votre situation actuelle, suivie d'une stratégie personnalisée, puis d'une exécution rigoureuse avec un suivi transparent. Chaque projet est soumis à des standards de qualité stricts pour garantir un retour maximal sur votre investissement.`,
       };
 
   const localExpertiseSection = isAr
@@ -1046,7 +1058,7 @@ export function generateServiceCityFAQs(service: ServiceDef, city: City, isAr: b
   return [
     { q: `Comment obtenir un devis pour ${service.name.toLowerCase().startsWith("e") || service.name.toLowerCase().startsWith("a") ? "l'" : "la "}${service.name.toLowerCase()} à ${city.name} ?`, a: `Prix sur demande. Chaque projet reçoit un devis personnalisé selon vos objectifs, le périmètre et vos besoins spécifiques à ${city.name}.` },
     { q: `Travaillez-vous avec des entreprises à ${city.name} ?`, a: `Absolument ! Je sers des entreprises dans tout le Maroc, y compris à ${city.name}. Basé à Meknès, je travaille à distance ou je me déplace pour les réunions importantes.` },
-    { q: `Combien de temps faut-il pour voir les résultats de ${service.name.toLowerCase()} ?`, a: `Les résultats varient selon le service. En général, j'obtiens des premiers résultats en 1 à 3 mois avec une amélioration continue.` },
+    { q: `Combien de temps faut-il pour voir les résultats ${de(service.name.toLowerCase())} ?`, a: `Les résultats varient selon le service. En général, j'obtiens des premiers résultats en 1 à 3 mois avec une amélioration continue.` },
     { q: `Pourquoi vous choisir plutôt qu'une agence à ${city.name} ?`, a: `J'offre un service personnalisé de haute qualité avec une communication directe. Avec +50 projets réussis, j'ai un historique éprouvé de résultats dans tout le Maroc. Mon expertise technique (React, TypeScript) est supérieure à la plupart des agences locales.` },
   ];
 }

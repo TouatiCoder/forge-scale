@@ -1,3 +1,15 @@
+# NOTE (Sept 2026 audit): this directive was previously wrapped in
+# <IfModule mod_dir.c>. On this host that guard evaluates false, so the
+# directive was silently skipped and EVERY prerendered route was still
+# 301-redirecting to its trailing-slash form. Verified in production:
+#   GET /application-mobile-el-jadida -> 301 -> /application-mobile-el-jadida/
+# while that page's own rel=canonical points back at the no-slash URL, and
+# all 149 sitemap entries + internal links use the no-slash form. GSC's
+# stored googleCanonical is the no-slash URL, i.e. a redirecting URL.
+# Left unguarded so it actually applies; the mod_rewrite fallback below
+# covers hosts where DirectorySlash is unavailable.
+DirectorySlash Off
+
 <IfModule mod_dir.c>
   # scripts/prerender-static.mjs (Aug 2026 SEO audit) now writes each route's
   # prerendered HTML to dist/<route>/index.html (e.g.
@@ -55,6 +67,15 @@
   # into an unrelated surviving service page.
   RewriteRule ^services/montage-video/?$ /services [R=301,L]
   RewriteRule ^montage-video-.*$ - [G]
+
+  # Host-independent belt-and-braces for the trailing-slash problem above.
+  # If /foo has no trailing slash but dist/foo/index.html exists, serve that
+  # file INTERNALLY (no redirect, no Location header) so the no-slash URL —
+  # the one in the sitemap, the canonical tag and every internal link — is
+  # the URL that actually returns 200. Must stay ahead of the SPA fallback.
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
+  RewriteRule ^(.*)$ /$1/index.html [L]
 
   # React Router SPA fallback for Hostinger static hosting.
   RewriteCond %{REQUEST_FILENAME} !-f
