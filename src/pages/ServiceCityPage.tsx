@@ -62,13 +62,15 @@ const ServiceCityPage = () => {
   const painPoints = isAr ? service.painPointsAr : service.painPoints;
   const benefits = isAr ? service.benefitsAr : service.benefits;
 
+  const seoOverride = !isAr ? service.citySeoOverrides?.[city.slug] : undefined;
   const qualifier = service.cityTitleQualifier ? ` ${service.cityTitleQualifier}` : "";
   const metaTitle = isAr
     ? `${service.nameAr} في ${city.nameAr} | خبير رقمي المغرب`
-    : `${service.name}${qualifier} à ${city.name} | Expert Digital Maroc`;
+    : seoOverride?.title || `${service.name}${qualifier} à ${city.name} | Expert Digital Maroc`;
   const metaDesc = isAr
     ? `${service.shortDescAr} في ${city.nameAr}، المغرب. عرض سعر مخصص عند الطلب.`
-    : `${service.shortDesc} à ${city.name}, Maroc. Devis personnalisé, +50 projets réalisés.`;
+    : seoOverride?.description || `${service.shortDesc} à ${city.name}, Maroc. Devis personnalisé, +50 projets réalisés.`;
+  const pageH1 = !isAr ? seoOverride?.h1 || `${service.name} à ${city.name}` : `${service.nameAr} في ${city.nameAr}`;
 
   return (
     <Layout>
@@ -94,7 +96,7 @@ const ServiceCityPage = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-3xl font-extrabold text-primary-foreground md:text-5xl leading-tight">
-                {isAr ? `${service.nameAr} في ${city.nameAr}` : `${service.name} à ${city.name}`}
+                {pageH1}
               </h1>
               <p className="mt-6 text-lg text-primary-foreground/80 leading-relaxed">
                 {isAr
