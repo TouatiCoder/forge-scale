@@ -16,7 +16,7 @@ DirectorySlash Off
   # dist/agence-digitale-meknes/index.html) instead of only dist/index.html.
   # Without this, mod_dir's default behavior 301-redirects a request for
   # /agence-digitale-meknes (no trailing slash, but now a real directory) to
-  # /agence-digitale-meknes/ before serving it — a redirect that didn't exist
+  # /agence-digitale-meknes/ before serving it â a redirect that didn't exist
   # before and that conflicts with every canonical tag, sitemap entry and
   # internal link, which all use the no-trailing-slash form. This serves the
   # directory's index.html at the requested URL directly, no redirect.
@@ -27,7 +27,7 @@ DirectorySlash Off
   RewriteEngine On
 
   # Canonical host is https://touatiayoub.com (see index.html's rel=canonical).
-  # Collapse http:// and/or www. into ONE 301 straight to the canonical URL —
+  # Collapse http:// and/or www. into ONE 301 straight to the canonical URL â
   # done as a single rule so a visitor never chains http -> https -> www (or
   # the reverse), which Lighthouse flags as "Avoid multiple page redirects"
   # and each extra hop adds a full DNS+TLS+request round trip before the
@@ -38,9 +38,9 @@ DirectorySlash Off
   RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 
   # Legacy /fr/, /en/, /ar/-prefixed routes from a pre-Aug-2026 site structure
-  # (locale-prefixed paths; the current app has no such routes — locale is a
+  # (locale-prefixed paths; the current app has no such routes â locale is a
   # client-side toggle, not a URL segment). GSC's Aug 2026 Performance export
-  # shows Google still has ~17 of these indexed with real signal — notably
+  # shows Google still has ~17 of these indexed with real signal â notably
   # /fr/developpeur-web-meknes at position ~7 with 23 impressions/3mo, better
   # than almost every current URL. Without this they'd 200-OK into the SPA
   # shell as soft-404s and that earned ranking signal would just be lost.
@@ -57,25 +57,25 @@ DirectorySlash Off
   RewriteRule ^(fr|en|ar)/(process|privacy|terms)/?$ / [R=301,L]
   RewriteRule ^(fr|en|ar)/(.*)$ /$2 [R=301,L]
 
-  # Montage Vidéo service discontinued (Aug 2026): removed from src/lib/seo-data.ts's
-  # `services` array, so both its service-hub page and its 15 service×city
+  # Montage VidÃ©o service discontinued (Aug 2026): removed from src/lib/seo-data.ts's
+  # `services` array, so both its service-hub page and its 15 serviceÃcity
   # combination pages no longer render anywhere in the app. The hub URL still
   # gets real search traffic/links, so it 301s to the live /services index
   # instead of soft-404ing through the SPA fallback below. The per-city URLs
   # never accumulated meaningful signal and the service isn't coming back, so
-  # they 410 Gone — telling crawlers to drop them, not merge/redirect them
+  # they 410 Gone â telling crawlers to drop them, not merge/redirect them
   # into an unrelated surviving service page.
   RewriteRule ^services/montage-video/?$ /services [R=301,L]
   RewriteRule ^montage-video-.*$ - [G]
 
   # Host-independent belt-and-braces for the trailing-slash problem above.
   # If /foo has no trailing slash but dist/foo/index.html exists, serve that
-  # file INTERNALLY (no redirect, no Location header) so the no-slash URL —
-  # the one in the sitemap, the canonical tag and every internal link — is
+  # file INTERNALLY (no redirect, no Location header) so the no-slash URL â
+  # the one in the sitemap, the canonical tag and every internal link â is
   # the URL that actually returns 200. Must stay ahead of the SPA fallback.
-  RewriteCond %{REQUEST_URI} !/$
-  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
-  RewriteRule ^(.*)$ /$1/index.html [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^(.+?)/?$ $1/index.html [L]
 
   # React Router SPA fallback for Hostinger static hosting.
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -84,7 +84,7 @@ DirectorySlash Off
 </IfModule>
 
 # Vite fingerprints every build asset (dist/assets/*-<hash>.js/css) so a
-# given URL's bytes never change — cache those forever. index.html is NOT
+# given URL's bytes never change â cache those forever. index.html is NOT
 # fingerprinted (it's the thing that points at the current hashed assets),
 # so it must always be revalidated or visitors keep getting a stale shell
 # after a deploy. Missing long-lived cache headers on static assets is a
