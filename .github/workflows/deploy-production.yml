@@ -67,9 +67,10 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
+          timeout: 120000
           server-dir: ${{ vars.FTP_SERVER_DIR }}
           local-dir: ./dist/
-          log-level: minimal
+          log-level: standard
           dangerous-clean-slate: false
 
       - name: Smoke test production
