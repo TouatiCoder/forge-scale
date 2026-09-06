@@ -64,6 +64,11 @@ export interface ServiceDef {
    * impressions - not as a blanket keyword add.
    */
   cityTitleQualifier?: string;
+  /**
+   * Optional per-city SEO overrides for pages with a proven local query variant.
+   * Keep these narrowly scoped to GSC-backed opportunities; URLs remain unchanged.
+   */
+  citySeoOverrides?: Record<string, { title: string; h1: string; description: string }>;
 }
 
 export interface PricingTier {
@@ -414,6 +419,13 @@ export const services: ServiceDef[] = [
     metaDescription: "Stratégie SEO complète au Maroc : audit, optimisation on-page, netlinking et SEO local. Résultats mesurables.",
     pillarCluster: "Croissance",
     relatedServiceSlugs: ["creation-site-web", "refonte-site-web"],
+    citySeoOverrides: {
+      "beni-mellal": {
+        title: "Agence SEO à Béni Mellal | Référencement Google",
+        h1: "Agence SEO à Béni Mellal",
+        description: "Agence SEO à Béni Mellal : référencement local, optimisation Google, contenu et suivi des positions. Devis personnalisé.",
+      },
+    },
     pricing: [
       {
         name: "Audit SEO Complet",
@@ -650,6 +662,13 @@ export const services: ServiceDef[] = [
     // title/description simply never contained "sur mesure". This is the
     // only service with evidence for a qualifier - do not copy it around.
     cityTitleQualifier: "sur Mesure",
+    citySeoOverrides: {
+      "el-jadida": {
+        title: "Application mobile sur mesure à El Jadida | Expert Digital Maroc",
+        h1: "Application mobile sur mesure à El Jadida",
+        description: "Développement d’application mobile sur mesure à El Jadida avec Flutter, iOS et Android. Devis personnalisé sous 24h.",
+      },
+    },
     shortDesc: "Applications mobiles sur mesure, multiplateformes avec Flutter",
     shortDescAr: "تطبيقات جوال متعددة المنصات باستخدام Flutter",
     features: [
