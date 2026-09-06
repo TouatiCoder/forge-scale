@@ -1,3 +1,4 @@
+import { de } from "@/lib/fr";
 ﻿import { useParams, useLocation, Link } from "react-router-dom";
 import { ArrowRight, CheckCircle, MessageCircle, MapPin, Phone, Mail, Star, TrendingUp, Clock, Shield } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
@@ -61,9 +62,10 @@ const ServiceCityPage = () => {
   const painPoints = isAr ? service.painPointsAr : service.painPoints;
   const benefits = isAr ? service.benefitsAr : service.benefits;
 
+  const qualifier = service.cityTitleQualifier ? ` ${service.cityTitleQualifier}` : "";
   const metaTitle = isAr
     ? `${service.nameAr} في ${city.nameAr} | خبير رقمي المغرب`
-    : `${service.name} à ${city.name} | Expert Digital Maroc`;
+    : `${service.name}${qualifier} à ${city.name} | Expert Digital Maroc`;
   const metaDesc = isAr
     ? `${service.shortDescAr} في ${city.nameAr}، المغرب. عرض سعر مخصص عند الطلب.`
     : `${service.shortDesc} à ${city.name}, Maroc. Devis personnalisé, +50 projets réalisés.`;
@@ -193,12 +195,12 @@ const ServiceCityPage = () => {
           <h2 className="text-2xl font-bold mb-4 md:text-3xl">
             {isAr
               ? `ماذا أقدم في ${service.nameAr} في ${city.nameAr}`
-              : `Mes prestations de ${service.name.toLowerCase()} à ${city.name}`}
+              : `Mes prestations ${de(service.name.toLowerCase())} à ${city.name}`}
           </h2>
           <p className="text-muted-foreground mb-10 max-w-2xl">
             {isAr
               ? `أقدم خدمات ${service.nameAr} الشاملة للشركات في ${city.nameAr}. كل خدمة مصممة لتحقيق أقصى عائد على الاستثمار.`
-              : `Je propose des services de ${service.name.toLowerCase()} complets pour les entreprises à ${city.name}. Chaque prestation est conçue pour maximiser votre retour sur investissement.`}
+              : `Je propose des services ${de(service.name.toLowerCase())} complets pour les entreprises à ${city.name}. Chaque prestation est conçue pour maximiser votre retour sur investissement.`}
           </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((f) => (
