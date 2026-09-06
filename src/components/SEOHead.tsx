@@ -400,9 +400,14 @@ export function SEOHead({
     setMetaByProperty("og:locale:alternate", "ar_MA");
 
     setLink("canonical", canonicalUrl);
+    // Only fr-MA + x-default are self-referenced. An "ar-MA" alternate
+    // pointing at this same French URL is an invalid signal: hreflang must
+    // map a locale to a DISTINCT URL, and no Arabic URL exists (locale is a
+    // client-side toggle). Sept 2026 Trends check also found no measurable
+    // Moroccan search demand in Arabic for these services, so there is no
+    // reason to reinstate it until real /ar/ URLs ship.
     const hreflangEntries: Record<string, string> = {
       "fr-MA": canonicalUrl,
-      "ar-MA": canonicalUrl,
       "x-default": canonicalUrl,
       ...(hreflangAlternates
         ? Object.fromEntries(
